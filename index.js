@@ -7,7 +7,7 @@ import requestHeaders from "./requestHeaders";
 let responseAdapter = null;
 let responseInterceptor = null;
 let defaultObject = {success:false, message:'网络请求失败,请重试', data:null};
-let defaultServerNull = {success:false, message:'服务器域名地址配置失败', data:null};
+let defaultServerNull = {success:false, message:'服务器域名serverApi或currentEnv没有配置', data:null};
 const defaultTimeout = 15000;
 
 const httpClient = {
@@ -28,9 +28,7 @@ const httpClient = {
         let requestMethod = method ? method :'POST';
         let apiParams = params ? params :null;
         let requestTimeout = timeout ? timeout : defaultTimeout; //网络请求超时时间
-
-
-        let headers = Object.assign({},requestHeaders); //设置请求头
+        let headers = Object.assign({},requestHeaders); //配置请求头
         if (header) {
             headers = Object.assign({}, headers, header);
         }
