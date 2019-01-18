@@ -1,0 +1,34 @@
+{
+  "name": "react-native-zfetch",
+  "version": "1.0.0",
+  "description": "封装好的react-native网络请求库，基于rn-fetch-blob实现，可配置response拦截器以及适配器。",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "react-native-cookies": "^3.3.0",
+    "react-native-device-info": "^0.25.0",
+    "rn-fetch-blob": "^0.10.14"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhangguozhong/react-native-zfetch.git"
+  },
+  "keywords": [
+    "react-native",
+    "http",
+    "fetch",
+    "https"
+  ],
+  "author": "zhangguozhong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zhangguozhong/react-native-zfetch/issues"
+  },
+  "homepage": "https://github.com/zhangguozhong/react-native-zfetch#readme"
+}
