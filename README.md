@@ -9,7 +9,7 @@ configHeader.setHeaders({
     'Header-CompanyId':'',
     'Header-CurTime':'',
     'Header-UserId':'',
-    'Cookie':'token',
+    'Cookie':'token'
 });
 
 ### serverApi
