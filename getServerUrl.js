@@ -6,7 +6,7 @@ const getServerUrl = {
 
     serverUrl: function (action) {
         const { server,apiUrl } = action;
-        if (notConfigServer(allEnv) || !serverEnv.currentEnv) {
+        if (notConfigServer(allEnv) || !allEnv[server] || !serverEnv.currentEnv) {
             //没有配置serverApi以及currentEnv，返回null
             return defaultServerUrl;
         }
