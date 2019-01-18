@@ -3,7 +3,6 @@ import { Platform } from 'react-native';
 import CookieManager from 'react-native-cookies';
 import getServerUrl from "./getServerUrl";
 import requestHeaders from './requestHeaders';
-import storageTask from './task/storageTask';
 
 let responseAdapter = null; //response适配器预处理请求返回数据
 let responseInterceptor = null; //拦截器处理特定的业务逻辑
@@ -48,7 +47,7 @@ const httpClient = {
             CookieManager.clearAll();
         }
 
-        let promiseTask = RNFetchBlob.config({trusty: true, timeout: requestTimeout})
+        RNFetchBlob.config({trusty: true, timeout: requestTimeout})
             .fetch(requestMethod, requestUrl, headers, requestParams).then((resp) => {
             return resp.json();
         }).then((json) => {
@@ -67,13 +66,11 @@ const httpClient = {
             if (callback) {
                 callback(resultJson);
             }
-        }).catch(() => {
+        }).cancel(() => { console.log('已取消'); }).catch(() => {
             if (callback) {
                 callback(defaultObject);
             }
         });
-
-        storageTask.setTask(promiseTask,pageId);
     },
 
     registerAdapter: function (adapter) {
