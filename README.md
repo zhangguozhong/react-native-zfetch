@@ -6,9 +6,9 @@
 配置请求头header；
 
 configHeader.setHeaders({
-    'TM-Header-CompanyId':'',
-    'TM-Header-CurTime':'',
-    'TM-Header-UserId':'',
+    'Header-CompanyId':'',
+    'Header-CurTime':'',
+    'Header-UserId':'',
     'Cookie':'token',
 });
 
