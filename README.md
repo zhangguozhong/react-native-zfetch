@@ -14,7 +14,11 @@ configHeader.setHeaders({
 
 ### serverApi
 
-配置服务器域名列表，可分不同环境；
+配置服务器域名列表，每个server对应dev，test，uat，producttion域名环境；
+
+for (let env in AllEnv) {
+  serverApi[env] = AllEnv[env];
+}
 
 ### serverEnv
 
