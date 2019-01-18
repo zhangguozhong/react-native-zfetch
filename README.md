@@ -35,9 +35,3 @@ httpClient.registerResponseInterceptor(responseInterceptor); //注入拦截器
 httpClient.registerAdapter(responseAdapter); //注入适配器
 
 httpClient.requestAction(actionUrl.loginAction('zan','123456')); //发起请求
-
-### storageTask
-
-保存已发起的网络请求，pageId是component的属性；
-
-storageTask.setTask(promiseTask,pageId);
