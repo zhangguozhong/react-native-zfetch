@@ -66,7 +66,7 @@ const httpClient = {
             if (callback) {
                 callback(resultJson);
             }
-        }).cancel(() => { console.log('已取消'); }).catch(() => {
+        }).catch(() => {
             if (callback) {
                 callback(defaultObject);
             }
