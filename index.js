@@ -6,8 +6,8 @@ import requestHeaders from './requestHeaders';
 
 let responseAdapter = null; //response适配器预处理请求返回数据
 let responseInterceptor = null; //拦截器处理特定的业务逻辑
-let defaultObject = {success:false, message:'网络请求失败,请重试', data:null};
-let defaultServerNull = {success:false, message:'服务器域名serverApi或currentEnv没有配置', data:null};
+const defaultObject = {success:false, message:'网络请求失败,请重试', data:null};
+const defaultServerNull = {success:false, message:'服务器serverApi或currentEnv没有配置', data:null};
 const defaultTimeout = 15000;
 
 const httpClient = {
@@ -18,14 +18,13 @@ const httpClient = {
             callback && callback(defaultObject);
             return;
         }
-
-        const { method,params,header,timeout,pageName } = action;
         let requestUrl = getServerUrl.serverUrl(action);
         if (!requestUrl) {
             callback && callback(defaultServerNull);
             return;
         }
 
+        const { method,params,header,timeout,pageName } = action;
         let requestMethod = method ? method :'POST';
         let apiParams = params ? params :null;
         let requestTimeout = timeout ? timeout : defaultTimeout; //网络请求超时时间
@@ -51,9 +50,6 @@ const httpClient = {
 
         let fetchPromise = RNFetchBlob.config({trusty: true, timeout: requestTimeout})
             .fetch(requestMethod, requestUrl, headers, requestParams);
-
-        storagePromiseInPage(pageName, fetchPromise); //按pageName保存当前component发起的网络请求
-
         fetchPromise.then((resp) => {
             return resp.json();
         }).then((json) => {
@@ -77,6 +73,8 @@ const httpClient = {
                 callback(defaultObject);
             }
         });
+
+        storagePromiseInPage(pageName, fetchPromise); //按pageName保存当前component发起的网络请求
     },
 
     registerAdapter: function (adapter) {
