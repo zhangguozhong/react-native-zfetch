@@ -11,6 +11,7 @@ let defaultServerNull = {success:false, message:'服务器域名serverApi或curr
 const defaultTimeout = 15000;
 
 const httpClient = {
+    allPromise:{},
 
     requestAction: function (action, callback = null) {
         if (!action) {
@@ -18,7 +19,7 @@ const httpClient = {
             return;
         }
 
-        const { method,params,header,timeout,pageId } = action;
+        const { method,params,header,timeout,pageName } = action;
         let requestUrl = getServerUrl.serverUrl(action);
         if (!requestUrl) {
             callback && callback(defaultServerNull);
@@ -47,8 +48,13 @@ const httpClient = {
             CookieManager.clearAll();
         }
 
-        RNFetchBlob.config({trusty: true, timeout: requestTimeout})
-            .fetch(requestMethod, requestUrl, headers, requestParams).then((resp) => {
+
+        let fetchPromise = RNFetchBlob.config({trusty: true, timeout: requestTimeout})
+            .fetch(requestMethod, requestUrl, headers, requestParams);
+
+        storagePromiseInPage(pageName, fetchPromise); //按pageName保存当前component发起的网络请求
+
+        fetchPromise.then((resp) => {
             return resp.json();
         }).then((json) => {
             //1、拦截器目前用于拦截token过期判断；2、还可以用于json格式处理
@@ -79,7 +85,30 @@ const httpClient = {
 
     registerResponseInterceptor: function (interceptor) {
         responseInterceptor = interceptor;
+    },
+
+    cancelRequestInPage: function (pageName) {
+        if (!pageName) {
+            return;
+        }
+        let promiseInPage = this.allPromise[pageName];
+        if (Array.isArray(promiseInPage) && promiseInPage.length > 0) {
+            for (let cancelPromise of promiseInPage) {
+                cancelPromise.cancel();
+            }
+            this.allPromise[pageName] = [];
+        }
     }
 };
+
+function storagePromiseInPage(pageName,fetchPromise) {
+    if (!pageName) {
+        return;
+    }
+    if (Object.keys(httpClient.allPromise).indexOf(pageName) === -1) {
+        httpClient.allPromise[pageName] = [];
+    }
+    httpClient.allPromise[pageName].push(fetchPromise);
+}
 
 export default httpClient;

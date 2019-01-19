@@ -1,7 +1,7 @@
 {
   "name": "react-native-zfetch",
-  "version": "1.0.3",
-  "description": "封装好的react-native网络请求库，基于rn-fetch-blob实现，可配置response拦截器以及适配器。",
+  "version": "1.0.4",
+  "description": "封装好的react-native网络请求库，基于rn-fetch-blob实现，可配置response拦截器以及适配器，可取消网络请求。",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
