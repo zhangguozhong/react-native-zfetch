@@ -1,6 +1,15 @@
 # react-native-zfetch
 
 
+### usage
+
+yarn add react-native-zfetch or npm install --save react-native-zfetch
+
+react-native link rn-fetch-blob
+
+react-native link react-native-cookies
+
+
 ### requestHeaders
 
 配置请求头header；
