@@ -34,4 +34,10 @@ httpClient.registerResponseInterceptor(responseInterceptor); //注入拦截器
 
 httpClient.registerAdapter(responseAdapter); //注入适配器
 
-httpClient.requestAction(actionUrl.loginAction('zan','123456')); //发起请求
+httpClient.requestAction(actionUrl.loginAction('zan','123456',pageName)); //发起请求
+
+### cancelRequestInPage
+
+取消已发起的网络请求即，httpClient.cancelRequestInPage(pageName);
+
+注：pageName可使用react-navigation-props-helper，const { pageName } = this.props;
