@@ -39,7 +39,11 @@ const httpClient = {
         }else {
             headers = Object.assign({}, headers, {'Content-Type':'application/json'});
             if (apiParams) {
-                requestParams = JSON.stringify(apiParams);
+                if (requestMethod === 'GET') {
+                    requestUrl = getRequestUrl(requestUrl,apiParams);
+                }else {
+                    requestParams = JSON.stringify(apiParams);
+                }
             }
         }
         if (Platform.OS === 'android') {
@@ -75,6 +79,7 @@ const httpClient = {
         });
 
         storagePromiseInPage(pageName, fetchPromise); //按pageName保存当前component发起的网络请求
+        return fetchPromise;
     },
 
     registerAdapter: function (adapter) {
@@ -107,6 +112,19 @@ function storagePromiseInPage(pageName,fetchPromise) {
         httpClient.allPromise[pageName] = [];
     }
     httpClient.allPromise[pageName].push(fetchPromise);
+}
+
+function getRequestUrl(requestUrl,apiParams) {
+    if (!apiParams || Object.keys(apiParams).length === 0) {
+        return requestUrl;
+    }
+
+    let arrTemp = [];
+    for (let key of Object.keys(apiParams)) {
+        let param = key + '=' + apiParams[key];
+        arrTemp.push(param);
+    }
+    return requestUrl + '?' + arrTemp.join('&');
 }
 
 export default httpClient;
