@@ -54,7 +54,7 @@ httpClient.requestAction(actionUrl.loginAction('zan','123456',pageName)); //发�
 
 
 ## Demo
-### 初始化环境
+### 1、初始化环境
 
 App.js的componentWillMount中配置，为什么是componentWillMount，Component的生命周期componentWillMount->render->componentDidMout，render渲染子组件父组件由内往外执行，所以在componentWillMount进行初始化配置比较稳妥。
 
@@ -74,7 +74,29 @@ componentWillMount() {
 }
 ```
 
-### 发起网络请求与取消网络请求
+### 2、拦截器与适配器
+
+```javascript
+const responseInterceptor = {
+    //设置所有的拦截规则，也可再次配置header
+    interceptResponse: function (json, action) {
+        return false;
+    }
+};
+
+
+const responseAdapter = {
+    //处理response返回的数据，统一格式化成固定的数据格式如{success:true,data:[],message:'成功'}
+    handlerData: function (result, action) {
+        const { server } = action;
+        let realJson = null;
+
+        return realJson;
+    }
+};
+```
+
+### 3、发起网络请求与取消网络请求
 
 ```javascript
 TestPage.js
