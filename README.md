@@ -9,6 +9,8 @@ react-native link rn-fetch-blob
 
 react-native link react-native-cookies
 
+react-native link react-native-fs
+
 
 ### requestHeaders
 
