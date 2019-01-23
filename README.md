@@ -58,7 +58,7 @@ httpClient.requestAction(actionUrl.loginAction('zan','123456',pageName)); //发�
 ## Demo
 ### 1、初始化环境
 
-App.js的componentWillMount中配置，为什么是componentWillMount，Component的生命周期componentWillMount->render->componentDidMout，render渲染子组件父组件由内往外执行，所以在componentWillMount进行初始化配置，子组件componentDidMount中执行执行网络请求时，currentEnv与serverApi已配置成功。
+App.js的componentWillMount中配置，为什么是componentWillMount，Component的生命周期componentWillMount->render->componentDidMout，组件渲染是从子组件父组件由内往外执行，所以在componentWillMount进行初始化配置，子组件componentDidMount中执行执行网络请求时，currentEnv与serverApi已配置成功。
 
 ```javascript
 App.js 
