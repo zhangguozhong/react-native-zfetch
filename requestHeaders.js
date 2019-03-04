@@ -1,6 +1,5 @@
 import DeviceInfo from 'react-native-device-info';
-let userAgent = {
-    //用户设备信息统计
+const userAgent = {
     source:'APP',//来源客户端
     systemName:DeviceInfo.getSystemName(),//设备系统类型iOS或android
     systemVersion:DeviceInfo.getSystemVersion(),//设备系统版本如，'4.0'
@@ -10,8 +9,9 @@ let userAgent = {
 };
 
 const requestHeaders = {
-    'Accept': 'application/json',
-    'customUserAgent':JSON.stringify(userAgent)
+    'Accept':'application/json',
+    'TM-Header-CurTime':new Date().getTime().toString().substr(0,10),
+    'userAgent':JSON.stringify(userAgent)
 };
 
 export default requestHeaders;

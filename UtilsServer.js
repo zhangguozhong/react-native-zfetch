@@ -1,13 +1,11 @@
-import serverEnv from "./serverEnv";
-import allEnv from "./serverApi/serverApi";
+import serverEnv from './serverApi/serverEnv';
+import allEnv from './serverApi/serverApi';
 
-const defaultServerUrl = null; //域名地址未配置
-const getServerUrl = {
-
+const defaultServerUrl = null; //服务器地址未配置
+const UtilsServer = {
     serverUrl: function (action) {
         const { server,apiUrl } = action;
         if (notConfigServer(allEnv) || !allEnv[server] || !serverEnv.currentEnv) {
-            //没有配置serverApi以及currentEnv，返回null
             return defaultServerUrl;
         }
 
@@ -20,4 +18,4 @@ function notConfigServer(allEnv) {
     return Object.keys(allEnv).length === 0;
 }
 
-export default getServerUrl;
+export default UtilsServer;
