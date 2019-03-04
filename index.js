@@ -35,7 +35,7 @@ const httpClient = {
     },
     requestAction:function (action,callback = null) {
         if (!action) {
-            callback && callback(defaultObject);
+            executeCallback(callback,defaultObject);
             return;
         }
         const { apiUrl } = action;
