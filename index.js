@@ -3,6 +3,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import CookieManager from 'react-native-cookies';
 import UtilsServer from './UtilsServer';
 import requestHeaders from './requestHeaders';
+const RNFS = require('react-native-fs');
 
 let responseAdapter = null; //response适配器预处理请求返回数据
 let responseInterceptor = null; //拦截器处理特定的业务逻辑
@@ -12,6 +13,26 @@ const defaultTimeout = 15000;
 
 const httpClient = {
     allPromise:{},
+    downloadFile: async function(action,progressCallback = null,callback = null) {
+        try{
+            const { fileName,appendExt,apiUrl,headers } = action;
+            const destination = RNFS.TemporaryDirectoryPath + fileName + appendExt;
+            let options = {
+                fromUrl: apiUrl,
+                toFile: destination,
+                headers:headers,
+                progress: (data) => { executeCallback(progressCallback,data); },
+                background:true,
+                progressDivider:1
+            };
+
+            await RNFS.downloadFile(options).promise;
+            const statResult = await RNFS.stat(destination);
+            executeCallback(callback,responseAdapter? responseAdapter.handlerData(statResult, action) :statResult);
+        }catch(e) {
+            executeCallback(callback,defaultObject);
+        }
+    },
     requestAction:function (action,callback = null) {
         if (!action) {
             callback && callback(defaultObject);
@@ -56,7 +77,6 @@ const httpClient = {
         fetchPromise.then((resp) => {
             return resp.json();
         }).then((json) => {
-            //1、拦截器目前用于拦截token过期判断；2、还可以用于json格式处理
             if (responseInterceptor) {
                 if (responseInterceptor.interceptResponse(json,action)) {
                     return;
