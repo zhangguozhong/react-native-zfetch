@@ -1,9 +1,9 @@
 import requestHeaders from "./requestHeaders";
 
-const configHeader = {
+const HeaderUtil = {
     setHeaders:function (headers) {
         Object.assign(requestHeaders, headers);
     }
 };
 
-export default configHeader;
+export default HeaderUtil;
