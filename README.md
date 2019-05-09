@@ -7,16 +7,14 @@ yarn add react-native-zfetch or npm install --save react-native-zfetch
 
 react-native link rn-fetch-blob
 
-react-native link react-native-cookies
-
 react-native link react-native-fs
 
 
-### requestHeaders
+### HeaderUtil
 
 配置请求头header；
 
-configHeader.setHeaders({
+HeaderUtil.setHeaders({
     'Header-CompanyId':'',
     'Header-CurTime':'',
     'Header-UserId':'',
