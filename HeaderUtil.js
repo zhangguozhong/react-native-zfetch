@@ -1,8 +1,9 @@
-import requestHeaders from "./requestHeaders";
+import HeaderFieldValueDictionary from './HeaderFieldValueDictionary';
 
 const HeaderUtil = {
+
     setHeaders:function (headers) {
-        Object.assign(requestHeaders, headers);
+        Object.assign(HeaderFieldValueDictionary, headers);
     }
 };
 
