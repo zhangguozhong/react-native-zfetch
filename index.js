@@ -7,6 +7,7 @@ let responseAdapter = null; //response适配器预处理请求返回数据
 let responseInterceptor = null; //拦截器处理特定的业务逻辑
 const defaultObject = { success:false,message:'网络请求失败,请重试',data:null };
 const defaultServerNull = { success:false,message:'服务器serverApi或currentEnv没有配置',data:null };
+const tokenExpiredObject = { success:false,message:'token过期了',data:null };
 const defaultTimeout = 15000;
 const allPromise = {}; //所有promise网络请求
 
@@ -75,10 +76,9 @@ const httpClient = {
         fetchPromise.then((resp) => {
             return resp.json();
         }).then((json) => {
-            if (responseInterceptor) {
-                if (responseInterceptor.interceptResponse(json,action)) {
-                    return;
-                }
+            if (responseInterceptor && responseInterceptor.interceptResponse(json,action)) {
+                executeCallback(callback,tokenExpiredObject);
+                return;
             }
 
             executeCallback(callback,responseAdapter? responseAdapter.handlerData(json,action): json);

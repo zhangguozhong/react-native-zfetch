@@ -1,11 +1,6 @@
-import configHeader from '../configHeader';
+import HeaderUtil from '../HeaderUtil';
 import serverEnv from '../serverApi/serverEnv';
 import httpClient from '../index';
 import serverApi from '../serverApi/serverApi';
 
-export {
-    configHeader,
-    serverEnv,
-    serverApi,
-    httpClient
-}
+export { HeaderUtil, serverEnv, serverApi, httpClient }
