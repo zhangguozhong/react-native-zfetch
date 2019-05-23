@@ -29,7 +29,8 @@ const httpClient = {
             await RNFS.downloadFile(options).promise;
             const statResult = await RNFS.stat(destination);
             executeCallback(callback,responseAdapter? responseAdapter.handlerData(statResult, action) :statResult);
-        }catch(e) {
+        }
+        catch(e) {
             executeCallback(callback,defaultObject);
         }
     },
@@ -51,15 +52,15 @@ const httpClient = {
         const requestMethod = method ? method :'POST';
         const apiParams = !params ?null: params;
         const requestTimeout = !timeout ?defaultTimeout: timeout; //网络请求超时时间
-        let headers = Object.assign({}, HeaderFieldValueDictionary, !header? {}:header); //配置请求头
+
+        const headers = HeaderFieldValueDictionary;
+        if (header) { Object.assign(headers, header); } //配置请求头
 
         let requestParams = null;
         if (apiParams && Array.isArray(apiParams)) {
-            headers = Object.assign({},headers,{'Content-Type': 'multipart/form-data'});
             requestParams = apiParams;
         }
         else {
-            headers = Object.assign({},headers,{'Content-Type': 'application/json'});
             if (apiParams) {
                 if (requestMethod === 'GET') {
                     requestUrl = getRequestUrl(requestUrl,apiParams);
@@ -150,9 +151,7 @@ function getRequestUrl(requestUrl,apiParams) {
     return encodeURI(tempParams.length === 0 ? requestUrl :(requestUrl + '?' + tempParams.join('&')));
 }
 
-function isEmptyObject(object) {
-    return !object || Object.keys(object).length === 0;
-}
+function isEmptyObject(object) { return !object || Object.keys(object).length === 0; }
 
 function checkApiUrl(apiUrl) {
     const regular = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;

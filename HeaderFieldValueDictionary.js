@@ -10,6 +10,7 @@ const userAgent = {
 
 const HeaderFieldValueDictionary = {
     'Accept':'application/json',
+    'Content-Type': 'application/json',
     'TM-Header-CurTime':new Date().getTime().toString().substr(0,10),
     'userAgent':JSON.stringify(userAgent)
 };
