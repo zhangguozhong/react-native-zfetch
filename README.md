@@ -41,7 +41,7 @@ httpNetwork.requestAction(actionUrl.loginAction('zan','123456')); //发起请求
 
 取消已发起的网络请求即，httpNetwork.cancelRequests(array);
 
-注：cancelRequests参数传数组，如接口api/test/login，httpNetwork.cancelRequests([login])
+注：cancelRequests参数传数组，如接口api/test/login，httpNetwork.cancelRequests(['login'])
 
 
 
