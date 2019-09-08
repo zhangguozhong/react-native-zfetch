@@ -2,7 +2,7 @@ import HeaderFieldValueDictionary from './HeaderFieldValueDictionary';
 
 const HeaderUtil = {
 
-    setHeaders: function (headers) {
+    setHeaders:function (headers) {
         Object.assign(HeaderFieldValueDictionary, headers);
     }
 };
