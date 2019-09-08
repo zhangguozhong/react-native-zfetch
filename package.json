@@ -1,6 +1,6 @@
 {
   "name": "react-native-zfetch",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "封装好的react-native网络请求库，基于rn-fetch-blob实现，可配置response拦截器以及适配器，可取消网络请求。",
   "main": "dist/index.js",
   "scripts": {
@@ -9,7 +9,6 @@
   "dependencies": {
     "react-native-cookies": "^3.3.0",
     "react-native-device-info": "^0.25.0",
-    "react-native-fs": "^2.13.3",
     "rn-fetch-blob": "^0.10.14"
   },
   "peerDependencies": {
