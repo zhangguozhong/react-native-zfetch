@@ -7,8 +7,6 @@ yarn add react-native-zfetch or npm install --save react-native-zfetch
 
 react-native link rn-fetch-blob
 
-react-native link react-native-fs
-
 
 ### HeaderUtil
 
@@ -21,77 +19,92 @@ HeaderUtil.setHeaders({
     'Cookie':'token'
 });
 
-### serverApi
+### serverDomain
 
-配置服务器域名列表，每个server对应dev，test，uat，production域名环境；
+配置服务器域名，每个server对应dev，test，uat，production域名环境；
 
-for (let env in AllEnv) {
-  serverApi[env] = AllEnv[env];
-}
+Object.assign(serverDomain, AllEnv);
 
-### serverEnv
+### serverEnvironment
 
 配置服务器环境；
 
-serverEnv.currentEnv = 'test'；
+serverEnvironment.currentEnvironment = 'test'；
 
-### httpClient
+### httpNetwork
 
-发起网络请求，配置response拦截器与适配器；
+发起网络请求；
 
-httpClient.registerResponseInterceptor(responseInterceptor); //注入拦截器
+httpNetwork.requestAction(actionUrl.loginAction('zan','123456')); //发起请求
 
-httpClient.registerAdapter(responseAdapter); //注入适配器
+### cancelRequests
 
-httpClient.requestAction(actionUrl.loginAction('zan','123456',pageName)); //发起请求
+取消已发起的网络请求即，httpNetwork.cancelRequests(array);
 
-### cancelRequestInPage
-
-取消已发起的网络请求即，httpClient.cancelRequestInPage(pageName);
-
-注：pageName可使用react-navigation-props-helper，const { pageName } = this.props;
+注：cancelRequests参数传数组，如接口api/test/login，httpNetwork.cancelRequests([login])
 
 
 
 ## Demo
 ### 1、初始化环境
 
-App.js的componentWillMount中配置，为什么是componentWillMount，Component的生命周期componentWillMount->render->componentDidMout，组件是从子组件父组件由内往外执行渲染，所以在componentWillMount进行初始化配置，子组件componentDidMount中执行执行网络请求时，currentEnv与serverApi已配置成功。
+App.js的componentWillMount中配置，为什么是componentWillMount，Component的生命周期componentWillMount->render->componentDidMout，组件是从子组件父组件由内往外执行渲染，所以在componentWillMount进行初始化配置，子组件componentDidMount中执行执行网络请求时网络相应配置已完成。
 
 ```javascript
+NetWork.js
+
+import AllEnv from './AllEnv';
+import {serverDomain, serverEnvironment, serverInterceptor} from '../netwokModule/dist/index';
+import Environment from './Environment';
+import interceptor from './serverInterceptor';
+
+const Network = {
+
+    initAppEnvironment: function () {
+        serverEnvironment.currentEnvironment = Environment.currentEnvironment;
+        Object.assign(serverDomain, AllEnv);
+        Object.assign(serverInterceptor, interceptor);
+    }
+};
+
+export default Network;
+
+
 App.js 
 
-import { serverEnv,serverApi,httpClient } from 'react-native-zfetch';
+import Network from './script/networkConfig/Network';
 
 componentWillMount() {
-    serverEnv.currentEnv = 'test';
-    for (let env in AllEnv) {
-        serverApi[env] = AllEnv[env];
-    }
-
-    httpClient.registerResponseInterceptor(responseInterceptor); //注入拦截器
-    httpClient.registerAdapter(responseAdapter); //注入适配器
+    Network.initAppEnvironment();
 }
 ```
 
 ### 2、拦截器与适配器
 
 ```javascript
-const responseInterceptor = {
-    //设置所有的拦截规则，也可再次配置header
-    interceptResponse: function (json, action) {
-        return false;
+test:{
+        interceptorResponse:function (json, action) {
+
+            console.log('do something');
+
+            return responseInterceptor.interceptResponse(json, action);
+        },
+
+        handlerResponseData:function (json) {
+
+            return {};
+        }
     }
-};
+    注意：test表示的是服务器名，多服务器时可以为每个服务器配置不同的拦截逻辑；
 
 
-const responseAdapter = {
-    //处理response返回的数据，统一格式化成固定的数据格式如{success:true,data:[],message:'成功'}
-    handlerData: function (result, action) {
-        const { server } = action;
-        let realJson = null;
+const responseInterceptor = {
 
-        return realJson;
+    interceptResponse:function (json,action) {
+        
+        //处理自己的逻辑
+
+        return { isIntercept:false, message:'成功了', error:{} };
     }
 };
 ```
@@ -101,18 +114,15 @@ const responseAdapter = {
 ```javascript
 TestPage.js
 
-import { httpClient } from 'react-native-zfetch';
+import { httpNetwork } from 'react-native-zfetch';
 
 componentDidMount() {
-    const { pageName } = this.props;
-    httpClient.requestAction(actionUrl.loginAction('xxx','xxx',pageName), (data) => {
+    httpNetwork.requestAction(actionUrl.loginAction('xxx','xxx',pageName), (data) => {
 
     }); //发起请求
 }
 
-
 componentWillUnmount() {
-    const { pageName } = this.props;
-    httpClient.cancelRequestInPage(pageName); //取消网络请求
+    httpNetwork.cancelRequests(['XXX']); //取消网络请求
 }
 ```
